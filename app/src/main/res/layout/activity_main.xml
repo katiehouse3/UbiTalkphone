@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:id="@+id/frameLayout">
+
+    <Button
+        android:id="@+id/speak"
+        android:layout_width="111dp"
+        android:layout_height="59dp"
+        android:layout_marginBottom="336dp"
+        android:text="Start Listening"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="111dp"
+        android:layout_height="59dp"
+        android:layout_marginBottom="236dp"
+        android:text="Stop listening"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/write"
+        android:layout_width="169dp"
+        android:layout_height="108dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="72dp"
+        android:text="Listener"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.409"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15" />
+
+</android.support.constraint.ConstraintLayout>
