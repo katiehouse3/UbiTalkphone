@@ -1,6 +1,5 @@
 package com.app.ubitalk_phone;
 
-
 import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
@@ -22,6 +21,9 @@ import android.speech.SpeechRecognizer;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Toast;
 
 import com.app.ubitalk_phone.MainActivity;
 
@@ -59,11 +61,13 @@ public class MyService extends Service {
     final String GREEN = "#08c935";
 
     // Speed of speech
-    final double slow = 4;
-    final double fast = 6;
+    final double slow = 1;
+    final double fast = 4.5;
     private double n_words;
     private double n_words_total;
+    public double total_accum_words = 0;
     private long start_time;
+    private long overall_end_time;
 
     String speed = "On pace";
 
@@ -85,7 +89,12 @@ public class MyService extends Service {
 
 
         try {
-            FileOutputStream os = openFileOutput("dat.txt", Context.MODE_PRIVATE);
+            overall_end_time = System.currentTimeMillis();
+            String filename = MainActivity.usernameinput + "_" +
+                    MainActivity.overall_start_time + "_" +
+                    overall_end_time +".txt";
+            Log.i("FILE", filename);
+            FileOutputStream os = openFileOutput(filename, Context.MODE_PRIVATE);
             writer = new PrintWriter(os);
         } catch (Exception e) {
         }
@@ -150,8 +159,6 @@ public class MyService extends Service {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
@@ -261,10 +268,11 @@ public class MyService extends Service {
             n_words = data.size();
             String curr_speed = speed;
             n_words_total += n_words;
-            if (curr_time - start_time > 5000) {
+            if (curr_time - start_time > 2000) {
                 curr_speed = checkSpeed(n_words_total);
                 start_time = curr_time;
-                writer.print(n_words_total + "," + curr_speed + "," + curr_time + "\n");
+                total_accum_words += n_words_total;
+                writer.print(n_words_total + "," + total_accum_words + "," + curr_speed + "," + curr_time + "\n");
                 n_words_total = 0;
             }
             Log.i("UPDATE", "TOTAL Number of Words: " + n_words_total);
@@ -283,14 +291,16 @@ public class MyService extends Service {
                 MainActivity.textView.setText("");
                 mNoSpeechCountDown.start();
             }
+            MainActivity.progressBar.setVisibility(View.INVISIBLE);
+            Toast toast = Toast.makeText(getApplicationContext(), "Start Speaking", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
             Log.i("UPDATE", "onReadyForSpeech"); //$NON-NLS-1$
         }
 
         @Override
         public void onResults(Bundle results) {
 
-            //Log.d(TAG, "onResults"); //$NON-NLS-1$
-            //$NON-NLS-1$
             ArrayList data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
             String word = (String) data.get(data.size() - 1);
 
@@ -323,6 +333,7 @@ public class MyService extends Service {
         MainActivity.layout.setBackgroundColor(Color.parseColor(GREEN));
     }
     private void changeColor(String speed) {
+        Log.i("UPDATE",  "Changing Color " +  speed);
         switch(speed) {
             case "Slow":
                 MainActivity.layout.setBackgroundColor(Color.parseColor(BLUE));
