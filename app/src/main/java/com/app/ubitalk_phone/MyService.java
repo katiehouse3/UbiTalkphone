@@ -69,7 +69,7 @@ public class MyService extends Service {
     private long start_time;
     private long overall_end_time;
 
-    String speed = "On pace";
+    String speed = "On_pace";
 
     PrintWriter writer;
 
@@ -356,7 +356,7 @@ public class MyService extends Service {
         if (curr_speed <= slow){
             return "Slow";
         } else if (curr_speed > slow && curr_speed < fast) {
-            return "On pace";
+            return "On_pace";
         } else {
             return "Fast";
         }
